@@ -1,0 +1,109 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="mt-4">
+    <h1>MCQs Creator Application with Langchain</h1>
+    <form id="mcqForm" action="/generate_mcqs" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="file">Upload a PDF or text file</label>
+            <input type="file" class="form-control-file" id="file" name="file" required>
+        </div>
+        <div class="form-group">
+            <label for="num_mcqs">No. of MCQs</label>
+            <input type="number" class="form-control" id="num_mcqs" name="num_mcqs" min="1" value="1" required>
+        </div>
+        <div class="form-group">
+            <label for="subject">Subject</label>
+            <input type="text" class="form-control" id="subject" name="subject" maxlength="20" required>
+        </div>
+        <div class="form-group">
+            <label for="complexity">Complexity level</label>
+            <select class="form-control" id="complexity" name="complexity" required>
+                <option value="simple">Simple</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Create MCQs</button>
+    </form>
+
+    <div id="loader" class="loader" style="display:none;"></div>
+
+    <div id="mcqResult" class="mt-4" style="display:none;">
+        <h2>Generated MCQs</h2>
+        <table class="table table-dark table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">MCQ</th>
+                    <th scope="col">Choices</th>
+                    <th scope="col">Correct</th>
+                </tr>
+            </thead>
+            <tbody id="mcqTableBody">
+                <!-- MCQs will be populated here -->
+            </tbody>
+        </table>
+        <div class="form-group">
+            <label for="review"><strong>Review:</strong></label>
+            <textarea class="form-control" id="review" rows="3" readonly></textarea>
+        </div>
+        <a id="downloadLink" class="btn btn-success" href="#" download="mcqs.csv">Download CSV</a>
+    </div>
+</div>
+
+<script>
+    document.getElementById('mcqForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const loader = document.getElementById('loader');
+        loader.style.display = 'block';
+
+        const formData = new FormData(this);
+        fetch('/generate_mcqs', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(result => {
+            const statusCode = result.status_code
+            const mcqs = result.data;
+            const review = result.review;
+            const tableBody = document.getElementById('mcqTableBody');
+            tableBody.innerHTML = '';
+            console.log("result", result)
+            console.log(statusCode, statusCode == 200)
+
+            if (statusCode == 200){
+                for (const key in mcqs) {
+                    const mcq = mcqs[key];
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${mcq.mcq}</td>
+                        <td>${Object.keys(mcq.options).map(opt => `${opt} => ${mcq.options[opt]}`).join(' || ')}</td>
+                        <td>${mcq.correct}</td>
+                    `;
+                    tableBody.appendChild(row);
+                }
+
+                document.getElementById('review').value = review;
+                document.getElementById('mcqResult').style.display = 'block';
+
+                const csvContent = "data:text/csv;charset=utf-8," + Object.keys(mcqs).map(key => {
+                    const mcq = mcqs[key];
+                    return `${mcq.mcq},${Object.keys(mcq.options).map(opt => `${opt}=>${mcq.options[opt]}`).join(' || ')},${mcq.correct}`;
+                }).join('\n');
+                document.getElementById('downloadLink').setAttribute('href', encodeURI(csvContent));
+            }
+
+            loader.style.display = 'none';
+
+            if (statusCode != 200) {
+                alert(result.message)
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            loader.style.display = 'none';
+        });
+    });
+</script>
+{% endblock %}
