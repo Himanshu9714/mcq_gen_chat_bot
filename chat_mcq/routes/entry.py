@@ -9,4 +9,6 @@ entry_page = Blueprint(
 
 @entry_page.route("/")
 def index():
+    """Entry point of the app."""
+
     return render_template("index.html")

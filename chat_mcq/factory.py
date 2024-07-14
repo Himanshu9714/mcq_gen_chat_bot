@@ -7,6 +7,12 @@ from .extensions import db
 
 
 def create_app():
+    """
+    Create and configure the Flask application.
+
+    Returns:
+        Flask: The configured Flask application instance.
+    """
     app = Flask(__name__)
     app.config.from_object("chat_mcq.config")
 
@@ -18,14 +24,20 @@ def create_app():
 
 
 def configure_logging(app: Flask):
-    # default handler.
+    """
+    Configure logging for the Flask application.
+
+    Args:
+        app (Flask): The Flask application instance.
+    """
+    # Add default handler.
     app.logger.addHandler(default_handler)
 
-    # Logging level for the flask app, by default set to INFO
+    # Set logging level for the Flask app.
     logging_level = app.config.get("FLASK_LOGLEVEL", "INFO")
     app.logger.setLevel(getattr(logging, logging_level.upper()))
 
-    # Log the messages in the file if the config is provided
+    # Log messages to a file if the config is provided.
     log_file = app.config.get("FLASK_LOGFILE")
     if log_file:
         file_handler = logging.FileHandler(log_file, encoding="utf-8")
@@ -33,6 +45,12 @@ def configure_logging(app: Flask):
 
 
 def configure_extensions(app: Flask):
+    """
+    Initialize Flask extensions.
+
+    Args:
+        app (Flask): The Flask application instance.
+    """
     from .models import MCQ
 
     db.init_app(app)
@@ -42,6 +60,12 @@ def configure_extensions(app: Flask):
 
 
 def register_blueprints(app: Flask):
+    """
+    Register Blueprints with the Flask application.
+
+    Args:
+        app (Flask): The Flask application instance.
+    """
     from .routes.entry import entry_page
     from .routes.mcq_generator import mcq_generator
 

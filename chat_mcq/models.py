@@ -2,6 +2,8 @@ from .extensions import db
 
 
 class MCQ(db.Model):
+    """MCQ model."""
+
     __tablename__ = "mcqs"
 
     id = db.Column(db.Integer, primary_key=True)
