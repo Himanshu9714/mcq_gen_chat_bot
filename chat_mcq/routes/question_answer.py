@@ -5,7 +5,7 @@ from flask import current_app
 from flask import render_template
 from flask import request
 
-from ..utils.opensource_utils import get_qa_object
+from ..model.llama_model.llama_qa import get_qa_object
 
 # Create a Blueprint named 'question_answer'
 question_answer = Blueprint("question_answer", __name__)
