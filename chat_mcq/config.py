@@ -24,3 +24,9 @@ FLASK_LOGLEVEL = "INFO"
 
 # Flask log file
 # FLASK_LOGFILE=
+
+# Pinecone index name
+PINECONE_INDEX_NAME = ""
+
+# Model path where pre trained opensource model is stored
+OPEN_SOURCE_PRETRAINED_MODEL_PATH = r"\model\llama-2-7b-chat.ggmlv3.q4_0.bin"

@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="chat-container mt-4">
+    <div class="chat-header">
+        <img src="{{ url_for('static', filename='img/krishna.jpg') }}" alt="Profile Picture" class="profile-pic">
+        <div class="chat-info">
+            <h3>Bhagvad Gita Chatbot</h3>
+            <p>कृष्णं वन्दे जगद्गुरुम्</p>
+        </div>
+    </div>
+    <div class="chat-body" id="chatBody">
+        <!-- Chat messages will appear here -->
+    </div>
+    <div class="chat-footer">
+        <form id="chatForm" action="/chat/get" method="post">
+            <input type="text" class="form-control" id="msg" name="msg" placeholder="Type your message..." required>
+            <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane"></i></button>
+        </form>
+    </div>
+    <div id="loader" class="loader" style="display:none;"></div>
+</div>
+
+<script>
+    document.getElementById('chatForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const loader = document.getElementById('loader');
+        const chatBody = document.getElementById('chatBody');
+        loader.style.display = 'block';
+
+        const formData = new FormData(this);
+        fetch('/chat/get', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+            loader.style.display = 'none';
+            const botMsgDiv = document.createElement('div');
+            botMsgDiv.classList.add('message', 'received');
+            botMsgDiv.innerHTML = `<p>${data}</p>`;
+            chatBody.appendChild(botMsgDiv);
+            chatBody.scrollTop = chatBody.scrollHeight;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            loader.style.display = 'none';
+        });
+
+        const userMsg = document.createElement('div');
+        userMsg.classList.add('message', 'sent');
+        userMsg.innerHTML = `<p>${formData.get('msg')}</p>`;
+        chatBody.appendChild(userMsg);
+        chatBody.scrollTop = chatBody.scrollHeight;
+        this.reset();
+    });
+</script>
+{% endblock %}

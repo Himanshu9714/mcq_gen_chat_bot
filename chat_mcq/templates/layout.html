@@ -5,26 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MCQ Generator</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <div class="container mt-5">
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <div class="container">
+        <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link active" id="mcq-generator-tab" data-toggle="tab" href="#mcq-generator" role="tab" aria-controls="mcq-generator" aria-selected="true">MCQ Generator</a>
+                <a class="nav-link" href="/">MCQ Generator</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="chatbot-tab" data-toggle="tab" href="#chatbot" role="tab" aria-controls="chatbot" aria-selected="false">Chatbot</a>
+                <a class="nav-link" href="/chat">Chatbot</a>
             </li>
         </ul>
-        <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="mcq-generator" role="tabpanel" aria-labelledby="mcq-generator-tab">
-                {% block content %}{% endblock %}
-            </div>
-            <div class="tab-pane fade" id="chatbot" role="tabpanel" aria-labelledby="chatbot-tab">
-                <!-- Chatbot content will go here -->
-            </div>
-        </div>
+        {% block content %}{% endblock %}
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>

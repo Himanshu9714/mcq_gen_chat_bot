@@ -68,6 +68,8 @@ def register_blueprints(app: Flask):
     """
     from .routes.entry import entry_page
     from .routes.mcq_generator import mcq_generator
+    from .routes.question_answer import question_answer
 
     app.register_blueprint(entry_page)
     app.register_blueprint(mcq_generator)
+    app.register_blueprint(question_answer)

@@ -11,7 +11,7 @@ from werkzeug.utils import secure_filename
 
 from ..extensions import db
 from ..models import MCQ
-from ..utils import generate_mcqs
+from ..utils.openai_utils import generate_mcqs
 
 mcq_generator = Blueprint("mcq_generator", __name__)
 
