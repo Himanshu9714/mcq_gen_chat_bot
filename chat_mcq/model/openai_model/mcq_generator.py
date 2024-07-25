@@ -27,7 +27,7 @@ create a quiz  of {number} multiple choice questions for {subject} students in {
 Make sure the questions are not repeated and check all the questions to be conforming the text as well.
 Make sure to format your response like  RESPONSE_JSON below  and use it as a guide. \
 Ensure to make {number} MCQs.
-Make sure that response matches the same structure as I provided below. It must not have any other text apart from the structure, not even `json` to indicate it is a json response. This is because, I will load the response with json.loads in the python, so hope you get it.
+Make sure that response matches the same structure as I provided below. It must not have any other text apart from the structure, not even `json` to indicate it is a json response. This is because, I will load the response with json.loads in the python, so hope you get it. The correct_answer key must contains the correct option value i.e. a, b, c, or, d.
 ### RESPONSE_JSON
 {response_json}
 

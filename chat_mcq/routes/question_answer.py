@@ -25,7 +25,7 @@ def index():
     return render_template("chat.html")
 
 
-@question_answer.route("/chat/get", methods=["GET", "POST"])
+@question_answer.route("/chat/get", methods=["POST"])
 def chat():
     """
     Processes a chat message and returns the response from the QA system.
